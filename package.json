@@ -1,8 +1,8 @@
 {
-  "name": "lust",
+  "name": "goodcolors",
   "version": "1.0.0",
-  "description": "Dante and Virgil leave Limbo and enter the Second Circle – the first of the circles of Incontinence – where the punishments of Hell proper begin",
-  "main": "index.js",
+  "description": "A tool to help you design acessible color palettes",
+  "main": "app.js",
   "scripts": {
     "build": "webpack",
     "develop": "webpack --watch & node server.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/console-nz/lust.git"
+    "url": "git+https://github.com/jarred/goodcolors.git"
   },
-  "author": "PrototypeAlex",
+  "author": "jarred",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/console-nz/lust/issues"
+    "url": "https://github.com/jarred/goodcolors/issues"
   },
-  "homepage": "https://github.com/console-nz/lust#readme",
+  "homepage": "https://github.com/jarred/goodcolors#readme",
   "dependencies": {
     "inert": "^4.0.2",
     "react": "^15.3.2",
@@ -30,8 +30,16 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.3.13",
+    "css-loader": "^0.25.0",
+    "hapi": "^15.2.0",
+    "invariant": "^2.2.1",
     "postcss-loader": "^0.13.0",
     "precss": "^1.4.0",
+    "react": "^15.3.2",
+    "resolve-pathname": "^2.0.2",
+    "style-loader": "^0.13.1",
+    "tachyons": "^4.5.4",
+    "warning": "^3.0.0",
     "webpack": "^1.13.2"
   }
 }
