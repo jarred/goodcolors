@@ -30479,7 +30479,7 @@
 	      }
 
 	      var bodyText = "No accessible paragraph options found. Try adding more colours!";
-	      if (this.state.headings.length == 1) {
+	      if (this.state.body.length == 1) {
 	        bodyText = "One accessible option available";
 	      } else if (this.state.body.length) {
 	        bodyText = this.state.headings.length + " options found.";
