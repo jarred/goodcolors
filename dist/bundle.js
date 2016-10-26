@@ -25840,7 +25840,7 @@
 
 	var _combos = __webpack_require__(231);
 
-	var _underscore = __webpack_require__(233);
+	var _underscore = __webpack_require__(234);
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 
@@ -25870,14 +25870,20 @@
 	    var initialColours = [];
 
 	    // Green
-	    // initialColours = ['#001B0B', '#215732', '#00491E', '#007737', '#00892F', '#30B700', '#006F44', '#00A376', '#00B388', '#4DB748', '#00B140', '#00CFB4', '#007041', '#3E9A2C', '#215732', '#007A33', '#009739', '#56C271', '#00A82D', '#00AA13', '#279F00', '#1FA824', '#4CAE04', '#025F1D', '#008C15', '#A0DCAF', '#86CD8B', '#E1F4E4', '#1DAC57', '#1A5213', '#1A5213', '#1A5213', '#1A5213', '#1A5213', '#FFF'];
+	    initialColours = ['#001B0B', '#215732', '#00491E', '#007737', '#00892F', '#30B700', '#006F44', '#00A376', '#00B388', '#4DB748', '#00B140', '#00CFB4', '#007041', '#3E9A2C', '#215732', '#007A33', '#009739', '#56C271', '#00A82D', '#00AA13', '#279F00', '#1FA824', '#4CAE04', '#025F1D', '#008C15', '#A0DCAF', '#86CD8B', '#E1F4E4', '#1DAC57', '#1A5213', '#1A5213', '#1A5213', '#1A5213', '#1A5213', '#FFF'];
 
 	    // Material
 	    // initialColours = ['#ECEFF1','#CFD8DC','#B0BEC5','#90A4AE','#78909C','#607D8B','#546E7A','#455A64','#37474F','#263238','#FFFDE7','#FFF9C4','#FFF59D','#FFF176','#FFEE58','#FFEB3B','#FDD835','#FBC02D','#F9A825','#F57F17','#FFFF8D','#FFFF00','#FFEA00','#FFD600','#EDE7F6','#D1C4E9','#B39DDB','#9575CD','#7E57C2','#673AB7','#5E35B1','#512DA8','#4527A0','#311B92','#B388FF','#7C4DFF','#651FFF','#6200EA']
 
+	    // material greens
+	    // initialColours = ['E0F2F1','B2DFDB','80CBC4','4DB6AC','26A69A','009688','00897B','00796B','00695C','004D40','E8F5E9','C8E6C9','A5D6A7','81C784','66BB6A','4CAF50','43A047','388E3C','2E7D32','1B5E20','F1F8E9','DCEDC8','C5E1A5','AED581','9CCC65','8BC34A','7CB342','689F38','558B2F','33691E','FAFAFA','F5F5F5','EEEEEE','E0E0E0','BDBDBD','9E9E9E','757575','616161','424242','212121']
+
 	    var readyColors = [];
 
 	    initialColours.map(function (result) {
+	      if (result.indexOf('#') <= -1) {
+	        result = '#' + result;
+	      }
 	      readyColors.push((0, _color2.default)(result));
 	    });
 
@@ -26129,11 +26135,9 @@
 	  getAccessibleCombos: function getAccessibleCombos(palette, rating) {
 	    var _this = this;
 
-	    console.log('getAccessibleCombos', palette, rating);
 	    var options = [];
 	    var i = 0;
 	    palette.map(function (result, index) {
-	      console.log(result.hexString());
 	      var headings = _this.findHeadings(result, palette, rating);
 	      var body = _this.findBody(result, palette, rating);
 	      options.push({
@@ -26142,7 +26146,6 @@
 	        body: body
 	      });
 	    });
-	    console.log('options', options);
 	    return options;
 	  },
 	  findHeadings: function findHeadings(base, palette, rating) {
@@ -30409,7 +30412,6 @@
 	          'Add more colours to your palette to see some combinations.'
 	        );
 	      }
-	      console.log('combos', combos);
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -30443,9 +30445,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _color = __webpack_require__(218);
+	var _color = __webpack_require__(219);
+
+	var _color2 = _interopRequireDefault(_color);
+
+	var _color3 = __webpack_require__(218);
+
+	var _nytTopStories = __webpack_require__(233);
+
+	var _nytTopStories2 = _interopRequireDefault(_nytTopStories);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -30459,14 +30471,20 @@
 	  function Combination(props) {
 	    _classCallCheck(this, Combination);
 
+	    // console.log('TopStories', TopStories)
+
 	    var _this = _possibleConstructorReturn(this, (Combination.__proto__ || Object.getPrototypeOf(Combination)).call(this, props));
+
+	    var story = _nytTopStories2.default.results[Math.floor(Math.random() * _nytTopStories2.default.results.length)];
 
 	    _this.state = {
 	      base: props.combos.base,
 	      headings: props.combos.headings,
 	      body: props.combos.body,
 	      headingColor: null,
-	      bodyColor: null
+	      bodyColor: null,
+	      titleText: story.title,
+	      bodyText: story.abstract
 	    };
 	    return _this;
 	  }
@@ -30540,6 +30558,58 @@
 	        bodyText = this.state.body.length + " options found.";
 	      }
 
+	      var headingSwatch = null;
+	      if (this.state.headingColor != null) {
+	        var c = (0, _color2.default)(this.state.headingColor);
+	        var swatchStyle = {
+	          backgroundColor: c.hexString(),
+	          color: "rgba(255,255,255,.5)",
+	          fontSize: '11px'
+	        };
+	        if (c.light()) {
+	          swatchStyle.color = 'rgba(0,0,0,.5)';
+	        }
+	        headingSwatch = _react2.default.createElement(
+	          'span',
+	          { className: 'dib pa2 br2', style: swatchStyle },
+	          c.hexString()
+	        );
+	      }
+
+	      var bodySwatch = null;
+	      if (this.state.bodyColor != null) {
+	        var _c = (0, _color2.default)(this.state.bodyColor);
+	        var _swatchStyle = {
+	          backgroundColor: _c.hexString(),
+	          color: "rgba(255,255,255,.4)",
+	          fontSize: '11px'
+	        };
+	        if (_c.light()) {
+	          _swatchStyle.color = 'rgba(0,0,0,.4)';
+	        }
+	        bodySwatch = _react2.default.createElement(
+	          'span',
+	          { className: 'dib pa2 br2', style: _swatchStyle },
+	          _c.hexString()
+	        );
+	      }
+
+	      var baseSwatchStyle = _defineProperty({
+	        // backgroundColor: '#000',
+	        color: this.state.base.hexString(),
+	        fontSize: '11px',
+	        border: '1px solid rgba(0,0,0,.1)'
+	      }, 'color', 'rgba(0,0,0,.5)');
+	      if (this.state.base.dark()) {
+	        baseSwatchStyle.border = '1px solid rgba(255,255,255,.1)';
+	        baseSwatchStyle.color = 'rgba(255,255,255,.5)';
+	      }
+	      var baseSwatch = _react2.default.createElement(
+	        'span',
+	        { className: 'border-box dib pa2 br2', style: baseSwatchStyle },
+	        this.state.base.hexString()
+	      );
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'db', style: style },
@@ -30549,12 +30619,21 @@
 	          _react2.default.createElement(
 	            'h2',
 	            { style: { color: headingColor }, className: 'mb2 ma0' },
-	            headingText
+	            this.state.titleText
 	          ),
 	          _react2.default.createElement(
 	            'p',
-	            { style: { color: bodyColor }, className: 'mt2 mb2' },
-	            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat ex ut eros sagittis, vestibulum faucibus purus lobortis. Donec volutpat metus sit amet sapien tincidunt, ornare euismod purus fermentum. Cras ac pretium libero. Maecenas vehicula hendrerit nulla eget venenatis. Suspendisse placerat non arcu id malesuada.'
+	            { style: { color: bodyColor }, className: 'mt2 mb2 f6 lh-copy' },
+	            this.state.bodyText
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'mt3' },
+	            baseSwatch,
+	            ' ',
+	            headingSwatch,
+	            ' ',
+	            bodySwatch
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -30611,6 +30690,2326 @@
 
 /***/ },
 /* 233 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"status": "OK",
+		"copyright": "Copyright (c) 2016 The New York Times Company. All Rights Reserved.",
+		"section": "home",
+		"last_updated": "2016-10-26T18:58:05-04:00",
+		"num_results": 31,
+		"results": [
+			{
+				"section": "Briefing",
+				"subsection": "",
+				"title": "Cubs, Trump, Mosul: Your Wednesday Evening Briefing",
+				"abstract": "Here’s what you need to know at the end of the day.",
+				"url": "http://www.nytimes.com/2016/10/26/briefing/cubs-trump-mosul.html",
+				"byline": "By KAREN ZRAICK and SANDRA STEVENSON",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T18:25:20-04:00",
+				"created_date": "2016-10-26T18:01:46-04:00",
+				"published_date": "2016-10-26T18:01:46-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [],
+				"org_facet": [],
+				"per_facet": [],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/briefing/26eveningss-slide-LZLS/26eveningss-slide-LZLS-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Al Drago/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/briefing/26eveningss-slide-LZLS/26eveningss-slide-LZLS-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Al Drago/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/briefing/26eveningss-slide-LZLS/26eveningss-slide-LZLS-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Al Drago/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/briefing/26eveningss-slide-LZLS/26eveningss-slide-LZLS-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Al Drago/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/briefing/26eveningss-slide-LZLS/26eveningss-slide-LZLS-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Al Drago/The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dJF3ck"
+			},
+			{
+				"section": "Briefing",
+				"subsection": "",
+				"title": "Duterte, Mosul, Calais Jungle: Your Thursday Briefing",
+				"abstract": "Here’s what you need to know to start your day.",
+				"url": "http://www.nytimes.com/2016/10/27/briefing/asia-briefing.html",
+				"byline": "By CHARLES McDERMID",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T17:23:21-04:00",
+				"created_date": "2016-10-26T17:23:24-04:00",
+				"published_date": "2016-10-26T17:23:24-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [],
+				"org_facet": [],
+				"per_facet": [],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/nytnow/27BRIEFING-asia-slide-8ZVT/27BRIEFING-asia-slide-8ZVT-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Stephen Crowley/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/nytnow/27BRIEFING-asia-slide-8ZVT/27BRIEFING-asia-slide-8ZVT-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Stephen Crowley/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/nytnow/27BRIEFING-asia-slide-8ZVT/27BRIEFING-asia-slide-8ZVT-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Stephen Crowley/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/nytnow/27BRIEFING-asia-slide-8ZVT/27BRIEFING-asia-slide-8ZVT-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Stephen Crowley/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/nytnow/27BRIEFING-asia-slide-8ZVT/27BRIEFING-asia-slide-8ZVT-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Stephen Crowley/The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dLETfJ"
+			},
+			{
+				"section": "U.S.",
+				"subsection": "Politics",
+				"title": "Donald Trump Allies Focus Anger on Another Target: G.O.P. Leaders",
+				"abstract": "Conservatives in the factionalized Republican Party are already fanning the flames for a postelection revolt against Speaker Paul D. Ryan.",
+				"url": "http://www.nytimes.com/2016/10/27/us/politics/paul-ryan-gop-donald-trump.html",
+				"byline": "By JEREMY W. PETERS and MAGGIE HABERMAN",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T05:00:22-04:00",
+				"created_date": "2016-10-26T05:00:25-04:00",
+				"published_date": "2016-10-26T05:00:25-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Presidential Election of 2016",
+					"United States Politics and Government"
+				],
+				"org_facet": [
+					"Republican Party",
+					"Breitbart News Network LLC"
+				],
+				"per_facet": [
+					"Trump, Donald J",
+					"Ryan, Paul D Jr",
+					"Bannon, Stephen K"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27repubs1/27repubs1-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald J. Trump at a campaign event in Sanford, Fla., on Tuesday.",
+						"copyright": "Eric Thayer for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27repubs1/27repubs1-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald J. Trump at a campaign event in Sanford, Fla., on Tuesday.",
+						"copyright": "Eric Thayer for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27repubs1/27repubs1-articleInline-v2.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald J. Trump at a campaign event in Sanford, Fla., on Tuesday.",
+						"copyright": "Eric Thayer for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27repubs1/27repubs1-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald J. Trump at a campaign event in Sanford, Fla., on Tuesday.",
+						"copyright": "Eric Thayer for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27repubs1/27repubs1-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald J. Trump at a campaign event in Sanford, Fla., on Tuesday.",
+						"copyright": "Eric Thayer for The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dJapuS"
+			},
+			{
+				"section": "Podcasts",
+				"subsection": "",
+				"title": "What We Learned From Five Hours of Trump on Tape",
+				"abstract": "The intimate conversations between Donald J. Trump and his biographer, Michael D’Antonio, are the basis of our special two-part podcast.",
+				"url": "http://www.nytimes.com/2016/10/26/podcasts/what-we-learned-from-five-hours-of-trump-on-tape.html",
+				"byline": "By MICHAEL BARBARO",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T12:09:35-04:00",
+				"created_date": "2016-10-26T12:09:37-04:00",
+				"published_date": "2016-10-26T12:09:37-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Presidential Election of 2016",
+					"Podcasts"
+				],
+				"org_facet": [],
+				"per_facet": [],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26RUNUP/26RUNUP-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald Trump in Tampa, Fla., on Monday.",
+						"copyright": "Eric Thayer for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26RUNUP/26RUNUP-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald Trump in Tampa, Fla., on Monday.",
+						"copyright": "Eric Thayer for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26RUNUP/26RUNUP-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald Trump in Tampa, Fla., on Monday.",
+						"copyright": "Eric Thayer for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26RUNUP/26RUNUP-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald Trump in Tampa, Fla., on Monday.",
+						"copyright": "Eric Thayer for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26RUNUP/26RUNUP-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Donald Trump in Tampa, Fla., on Monday.",
+						"copyright": "Eric Thayer for The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dKCbXT"
+			},
+			{
+				"section": "U.S.",
+				"subsection": "Politics",
+				"title": "What Drives Donald Trump? Fear of Losing Status, Tapes Show",
+				"abstract": "In more than five hours of conversations — the last extensive biographical interviews he granted before running for president — Mr. Trump makes clear how difficult it is for him to imagine, let alone accept, defeat.",
+				"url": "http://www.nytimes.com/2016/10/26/us/politics/donald-trump-interviews.html",
+				"byline": "By MICHAEL BARBARO",
+				"item_type": "Article",
+				"updated_date": "2016-10-25T11:05:45-04:00",
+				"created_date": "2016-10-25T11:05:48-04:00",
+				"published_date": "2016-10-25T11:05:48-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Presidential Election of 2016",
+					"Celebrities"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Trump, Donald J",
+					"D'Antonio, Michael"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/25TRUMPTAPES1/25TRUMPTAPES1-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Recordings of Donald J. Trump reveal a man who is fixated on his own celebrity, anxious about losing his status and contemptuous of those who fall from grace.",
+						"copyright": "Damon Winter/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/25TRUMPTAPES1/25TRUMPTAPES1-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Recordings of Donald J. Trump reveal a man who is fixated on his own celebrity, anxious about losing his status and contemptuous of those who fall from grace.",
+						"copyright": "Damon Winter/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/25TRUMPTAPES1/25TRUMPTAPES1-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Recordings of Donald J. Trump reveal a man who is fixated on his own celebrity, anxious about losing his status and contemptuous of those who fall from grace.",
+						"copyright": "Damon Winter/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/25TRUMPTAPES1/25TRUMPTAPES1-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Recordings of Donald J. Trump reveal a man who is fixated on his own celebrity, anxious about losing his status and contemptuous of those who fall from grace.",
+						"copyright": "Damon Winter/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/25TRUMPTAPES1/25TRUMPTAPES1-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Recordings of Donald J. Trump reveal a man who is fixated on his own celebrity, anxious about losing his status and contemptuous of those who fall from grace.",
+						"copyright": "Damon Winter/The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2eHQZJs"
+			},
+			{
+				"section": "Business Day",
+				"subsection": "Media",
+				"title": "Megyn Kelly’s Pivotal Moment in a Post-Ailes Era at Fox News",
+				"abstract": "The host’s divergent approach took a different turn in her clash with Newt Gingrich and again raised the question of the channel’s future.",
+				"url": "http://www.nytimes.com/2016/10/27/business/media/megyn-kellys-pivotal-moment-in-a-post-ailes-era-at-fox-news.html",
+				"byline": "By JIM RUTENBERG",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T15:02:30-04:00",
+				"created_date": "2016-10-26T14:23:31-04:00",
+				"published_date": "2016-10-26T14:23:31-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"News and News Media",
+					"Presidential Election of 2016"
+				],
+				"org_facet": [
+					"Fox News Channel"
+				],
+				"per_facet": [
+					"Kelly, Megyn",
+					"Gingrich, Newt"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27RUTENBERG-2/27RUTENBERG-2-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Fox"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27RUTENBERG-2/27RUTENBERG-2-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Fox"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27RUTENBERG-2/27RUTENBERG-2-articleInline.jpg",
+						"format": "Normal",
+						"height": 114,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Fox"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27RUTENBERG-2/27RUTENBERG-2-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Fox"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27RUTENBERG-2/27RUTENBERG-2-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1077,
+						"width": 1797,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Fox"
+					}
+				],
+				"short_url": "http://nyti.ms/2dJ62EU"
+			},
+			{
+				"section": "Business Day",
+				"subsection": "",
+				"title": "Trump TV Offers (Fledgling) Framework for Potential Media Future",
+				"abstract": "An election show streaming on Facebook Live is fueling speculation that Donald J. Trump is laying the groundwork for a media empire to come.",
+				"url": "http://www.nytimes.com/2016/10/27/business/trump-tv-media-empire.html",
+				"byline": "By MICHAEL M. GRYNBAUM",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T08:21:08-04:00",
+				"created_date": "2016-10-26T08:21:10-04:00",
+				"published_date": "2016-10-26T08:21:10-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Presidential Election of 2016",
+					"News and News Media"
+				],
+				"org_facet": [
+					"Trump Tower (Manhattan, NY)"
+				],
+				"per_facet": [
+					"Trump, Donald J"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27TRUMPTV/27TRUMPTV-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Rudolph W. Giuliani, the former mayor of New York City, was a special guest on Trump TV on Tuesday night.",
+						"copyright": "Hilary Swift for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27TRUMPTV/27TRUMPTV-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Rudolph W. Giuliani, the former mayor of New York City, was a special guest on Trump TV on Tuesday night.",
+						"copyright": "Hilary Swift for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27TRUMPTV/27TRUMPTV-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Rudolph W. Giuliani, the former mayor of New York City, was a special guest on Trump TV on Tuesday night.",
+						"copyright": "Hilary Swift for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27TRUMPTV/27TRUMPTV-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Rudolph W. Giuliani, the former mayor of New York City, was a special guest on Trump TV on Tuesday night.",
+						"copyright": "Hilary Swift for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/business/27TRUMPTV/27TRUMPTV-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1367,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Rudolph W. Giuliani, the former mayor of New York City, was a special guest on Trump TV on Tuesday night.",
+						"copyright": "Hilary Swift for The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dI5NKv"
+			},
+			{
+				"section": "Business Day",
+				"subsection": "Media",
+				"title": "How Donald Trump Used Hollywood to Create ‘Donald Trump’",
+				"abstract": "Donald J. Trump has been a near-constant presence in TV shows, movies, documentaries, pageants and even professional wrestling events, since the 1980s.",
+				"url": "http://www.nytimes.com/2016/10/27/business/media/donald-trump-movies-tv-cameos.html",
+				"byline": "By KATIE ROGERS",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T12:40:42-04:00",
+				"created_date": "2016-10-26T12:40:45-04:00",
+				"published_date": "2016-10-26T12:40:45-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Presidential Election of 2016",
+					"Television",
+					"Wrestling",
+					"Movies"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Trump, Donald J"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/14/arts/15TVTrump2xp/15TVTrump2xp-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "From left, Charles Shaughnessy, Fran Drescher, and Donald J. Trump on “The Nanny” in the 1990s.",
+						"copyright": "via Photofest"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/14/arts/15TVTrump2xp/15TVTrump2xp-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "From left, Charles Shaughnessy, Fran Drescher, and Donald J. Trump on “The Nanny” in the 1990s.",
+						"copyright": "via Photofest"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/14/arts/15TVTrump2xp/15TVTrump2xp-articleInline.jpg",
+						"format": "Normal",
+						"height": 121,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "From left, Charles Shaughnessy, Fran Drescher, and Donald J. Trump on “The Nanny” in the 1990s.",
+						"copyright": "via Photofest"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/14/arts/15TVTrump2xp/15TVTrump2xp-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "From left, Charles Shaughnessy, Fran Drescher, and Donald J. Trump on “The Nanny” in the 1990s.",
+						"copyright": "via Photofest"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/14/arts/15TVTrump2xp/15TVTrump2xp-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 911,
+						"width": 1199,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "From left, Charles Shaughnessy, Fran Drescher, and Donald J. Trump on “The Nanny” in the 1990s.",
+						"copyright": "via Photofest"
+					}
+				],
+				"short_url": "http://nyti.ms/2dINlRL"
+			},
+			{
+				"section": "U.S.",
+				"subsection": "Politics",
+				"title": "‘We Need to Clean This Up’: Clinton Aide’s Newly Public Email Shows Concern",
+				"abstract": "The latest hacked emails from WikiLeaks highlight how the news that Hillary Clinton used a private server sent the White House and her campaign scrambling.",
+				"url": "http://www.nytimes.com/2016/10/26/us/politics/wikileaks-hillary-clinton-emails.html",
+				"byline": "By STEVE EDER",
+				"item_type": "Article",
+				"updated_date": "2016-10-25T16:38:59-04:00",
+				"created_date": "2016-10-25T16:39:01-04:00",
+				"published_date": "2016-10-25T16:39:01-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Presidential Election of 2016",
+					"E-Mail"
+				],
+				"org_facet": [
+					"State Department",
+					"WikiLeaks"
+				],
+				"per_facet": [
+					"Clinton, Hillary Rodham",
+					"Obama, Barack",
+					"Mills, Cheryl D",
+					"Podesta, John D"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26fd-wikileaks/26fd-wikileaks-thumbStandard-v2.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "President Obama and Hillary Clinton at the Democratic National Convention in Philadelphia on July 27.",
+						"copyright": "Ruth Fremson/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26fd-wikileaks/26fd-wikileaks-thumbLarge-v2.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "President Obama and Hillary Clinton at the Democratic National Convention in Philadelphia on July 27.",
+						"copyright": "Ruth Fremson/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26fd-wikileaks/26fd-wikileaks-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "President Obama and Hillary Clinton at the Democratic National Convention in Philadelphia on July 27.",
+						"copyright": "Ruth Fremson/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26fd-wikileaks/26fd-wikileaks-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "President Obama and Hillary Clinton at the Democratic National Convention in Philadelphia on July 27.",
+						"copyright": "Ruth Fremson/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26fd-wikileaks/26fd-wikileaks-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1366,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "President Obama and Hillary Clinton at the Democratic National Convention in Philadelphia on July 27.",
+						"copyright": "Ruth Fremson/The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dG6zaI"
+			},
+			{
+				"section": "World",
+				"subsection": "Middle East",
+				"title": "ISIS Sent Four Car Bombs. The Last One Hit Me.",
+				"abstract": "After a long day in a convoy near Mosul, it seemed safe for a photographer and Iraqi troops to exit their vehicle. Suddenly someone screamed, “Car bomb!”",
+				"url": "http://www.nytimes.com/2016/10/27/world/middleeast/iraq-mosul-isis-car-bombs.html",
+				"byline": "By BRYAN DENTON",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T05:00:58-04:00",
+				"created_date": "2016-10-26T05:01:01-04:00",
+				"published_date": "2016-10-26T05:01:01-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"vis-photo"
+				],
+				"org_facet": [
+					"Islamic State in Iraq and Syria (ISIS)"
+				],
+				"per_facet": [],
+				"geo_facet": [
+					"Iraq",
+					"Mosul (Iraq)"
+				],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/world/middleeast/27BATTLE-slide-ITAZ/27BATTLE-slide-ITAZ-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A suicide car bomb detonated.",
+						"copyright": "Bryan Denton for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/world/middleeast/27BATTLE-slide-ITAZ/27BATTLE-slide-ITAZ-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A suicide car bomb detonated.",
+						"copyright": "Bryan Denton for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/world/middleeast/27BATTLE-slide-ITAZ/27BATTLE-slide-ITAZ-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A suicide car bomb detonated.",
+						"copyright": "Bryan Denton for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/world/middleeast/27BATTLE-slide-ITAZ/27BATTLE-slide-ITAZ-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A suicide car bomb detonated.",
+						"copyright": "Bryan Denton for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/world/middleeast/27BATTLE-slide-ITAZ/27BATTLE-slide-ITAZ-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A suicide car bomb detonated.",
+						"copyright": "Bryan Denton for The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dJ61vM"
+			},
+			{
+				"section": "U.S.",
+				"subsection": "",
+				"title": "Pentagon Halts Efforts to Claw Back California National Guard Bonuses",
+				"abstract": "The Pentagon says it will suspend efforts to force the soldiers to give back incentives that were improperly paid out during the wars in Iraq and Afghanistan.",
+				"url": "http://www.nytimes.com/2016/10/27/us/pentagon-halts-efforts-to-claw-back-california-national-guard-bonuses.html",
+				"byline": "By DAVE PHILIPPS",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T12:48:28-04:00",
+				"created_date": "2016-10-26T12:48:30-04:00",
+				"published_date": "2016-10-26T12:48:30-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"United States Defense and Military Forces",
+					"Veterans"
+				],
+				"org_facet": [
+					"Defense Department"
+				],
+				"per_facet": [],
+				"geo_facet": [
+					"California"
+				],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/27guard/27guard-thumbStandard-v2.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "California National Guard soldiers at Moffett Federal Airfield in Mountain View, Calif., in November 2011.",
+						"copyright": "Paul Sakuma/Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/27guard/27guard-thumbLarge-v2.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "California National Guard soldiers at Moffett Federal Airfield in Mountain View, Calif., in November 2011.",
+						"copyright": "Paul Sakuma/Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/27guard/25GUARD-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "California National Guard soldiers at Moffett Federal Airfield in Mountain View, Calif., in November 2011.",
+						"copyright": "Paul Sakuma/Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/27guard/27guard-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "California National Guard soldiers at Moffett Federal Airfield in Mountain View, Calif., in November 2011.",
+						"copyright": "Paul Sakuma/Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/us/27guard/25GUARD-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1364,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "California National Guard soldiers at Moffett Federal Airfield in Mountain View, Calif., in November 2011.",
+						"copyright": "Paul Sakuma/Associated Press"
+					}
+				],
+				"short_url": "http://nyti.ms/2dKLRS5"
+			},
+			{
+				"section": "Opinion",
+				"subsection": "",
+				"title": "A Bonus Insult to Veterans",
+				"abstract": "The nation owes a debt to those who faithfully served — not the other way around.",
+				"url": "http://www.nytimes.com/2016/10/27/opinion/a-bonus-insult-to-veterans.html",
+				"byline": "By CHARLES E. SCHMIDT",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T15:36:10-04:00",
+				"created_date": "2016-10-26T15:36:12-04:00",
+				"published_date": "2016-10-26T15:36:12-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Veterans",
+					"United States Defense and Military Forces"
+				],
+				"org_facet": [
+					"American Legion",
+					"Defense Department"
+				],
+				"per_facet": [
+					"Carter, Ashton B"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/opinion/27schmidtWeb/27schmidtWeb-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Soldiers in the California Army National Guard stand in formation as their members are deployed to Afghanistan, in 2012.",
+						"copyright": "Chris Kaufman/Appeal-Democrat, via Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/opinion/27schmidtWeb/27schmidtWeb-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Soldiers in the California Army National Guard stand in formation as their members are deployed to Afghanistan, in 2012.",
+						"copyright": "Chris Kaufman/Appeal-Democrat, via Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/opinion/27schmidtWeb/27schmidtWeb-articleInline.jpg",
+						"format": "Normal",
+						"height": 137,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Soldiers in the California Army National Guard stand in formation as their members are deployed to Afghanistan, in 2012.",
+						"copyright": "Chris Kaufman/Appeal-Democrat, via Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/opinion/27schmidtWeb/27schmidtWeb-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Soldiers in the California Army National Guard stand in formation as their members are deployed to Afghanistan, in 2012.",
+						"copyright": "Chris Kaufman/Appeal-Democrat, via Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/opinion/27schmidtWeb/27schmidtWeb-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1437,
+						"width": 2000,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Soldiers in the California Army National Guard stand in formation as their members are deployed to Afghanistan, in 2012.",
+						"copyright": "Chris Kaufman/Appeal-Democrat, via Associated Press"
+					}
+				],
+				"short_url": "http://nyti.ms/2dLplbH"
+			},
+			{
+				"section": "Opinion",
+				"subsection": "",
+				"title": "Not Just Another Stinky Fish",
+				"abstract": "Menhaden are a key fish in the coastal food chain. Now fishing regulators are considering an ecological approach to managing them.",
+				"url": "http://www.nytimes.com/2016/10/26/opinion/not-just-another-stinky-fish.html",
+				"byline": "By RICHARD SCHIFFMAN",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T03:21:18-04:00",
+				"created_date": "2016-10-26T03:21:20-04:00",
+				"published_date": "2016-10-26T03:21:20-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Fish and Other Marine Life",
+					"Fishing, Commercial",
+					"Regulation and Deregulation of Industry",
+					"Omega-3 Fatty Acids",
+					"Sustainable Living"
+				],
+				"org_facet": [
+					"Atlantic States Marine Fisheries Commission"
+				],
+				"per_facet": [],
+				"geo_facet": [
+					"Atlantic Ocean"
+				],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/26schiffman/26schiffman-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A menhaden caught near Fire Island, N.Y., then inked and pressed directly onto rice paper using the traditional Japanese gyotaku printing method.",
+						"copyright": "Steve Thurston"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/26schiffman/26schiffman-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A menhaden caught near Fire Island, N.Y., then inked and pressed directly onto rice paper using the traditional Japanese gyotaku printing method.",
+						"copyright": "Steve Thurston"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/26schiffman/26schiffman-articleInline.jpg",
+						"format": "Normal",
+						"height": 107,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A menhaden caught near Fire Island, N.Y., then inked and pressed directly onto rice paper using the traditional Japanese gyotaku printing method.",
+						"copyright": "Steve Thurston"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/26schiffman/26schiffman-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A menhaden caught near Fire Island, N.Y., then inked and pressed directly onto rice paper using the traditional Japanese gyotaku printing method.",
+						"copyright": "Steve Thurston"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/26schiffman/26schiffman-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1151,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A menhaden caught near Fire Island, N.Y., then inked and pressed directly onto rice paper using the traditional Japanese gyotaku printing method.",
+						"copyright": "Steve Thurston"
+					}
+				],
+				"short_url": "http://nyti.ms/2dHsNcq"
+			},
+			{
+				"section": "Opinion",
+				"subsection": "",
+				"title": "A Nuclear Arsenal Upgrade",
+				"abstract": "What should the trillion-dollar modernization of the U.S. reserve of nuclear weapons look like?",
+				"url": "http://www.nytimes.com/roomfordebate/2016/10/26/a-nuclear-arsenal-upgrade",
+				"byline": "",
+				"item_type": "Blogpost",
+				"updated_date": "2016-10-26T16:28:57-04:00",
+				"created_date": "2016-10-26T11:48:07-04:00",
+				"published_date": "2016-10-26T11:48:07-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [],
+				"org_facet": [],
+				"per_facet": [],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/rfdnukes/rfdnukes-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Albuquerque Journal, via Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/rfdnukes/rfdnukes-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Albuquerque Journal, via Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/rfdnukes/rfdnukes-articleInline.jpg",
+						"format": "Normal",
+						"height": 117,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Albuquerque Journal, via Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/rfdnukes/rfdnukes-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Albuquerque Journal, via Associated Press"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/opinion/rfdnukes/rfdnukes-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1016,
+						"width": 1645,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Albuquerque Journal, via Associated Press"
+					}
+				]
+			},
+			{
+				"section": "Science",
+				"subsection": "",
+				"title": "With Dogs, It’s What You Say — and How You Say It",
+				"abstract": "New research suggests that dogs respond to meaning and intonation in human voices.",
+				"url": "http://www.nytimes.com/2016/08/30/science/with-dogs-its-what-you-say-and-how-you-say-it.html",
+				"byline": "By JAMES GORMAN",
+				"item_type": "Article",
+				"updated_date": "2016-08-29T21:14:26-04:00",
+				"created_date": "2016-08-29T21:14:30-04:00",
+				"published_date": "2016-08-29T21:14:30-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Dogs",
+					"Language and Languages",
+					"Brain"
+				],
+				"org_facet": [
+					"Science (Journal)"
+				],
+				"per_facet": [],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/08/30/science/30DOG1/30DOG1-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Dogs that were trained to enter an M.R.I. machine for the research.",
+						"copyright": "Enik Kubinyi"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/08/30/science/30DOG1/30DOG1-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Dogs that were trained to enter an M.R.I. machine for the research.",
+						"copyright": "Enik Kubinyi"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/08/30/science/30DOG1/30DOG1-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Dogs that were trained to enter an M.R.I. machine for the research.",
+						"copyright": "Enik Kubinyi"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/08/30/science/30DOG1/30DOG1-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Dogs that were trained to enter an M.R.I. machine for the research.",
+						"copyright": "Enik Kubinyi"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/08/30/science/30DOG1/30DOG1-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Dogs that were trained to enter an M.R.I. machine for the research.",
+						"copyright": "Enik Kubinyi"
+					}
+				],
+				"short_url": "http://nyti.ms/2c40znU"
+			},
+			{
+				"section": "Fashion & Style",
+				"subsection": "",
+				"title": "How to dress like an adult",
+				"abstract": "Defining what constitutes a mature wardrobe is a challenge in the age of the power hoodie. Here, three golden rules for grown-up garb.",
+				"url": "http://www.nytimes.com/2016/10/25/fashion/how-to-dress-like-an-adult.html",
+				"byline": "By VANESSA FRIEDMAN",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T13:20:16-04:00",
+				"created_date": "2016-10-26T13:20:19-04:00",
+				"published_date": "2016-10-26T13:20:19-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Fashion and Apparel"
+				],
+				"org_facet": [],
+				"per_facet": [],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/20/style/xxdress/xxdress-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A customer tries on a suit jacket inside a Canali Holding SpA store in Hong Kong.",
+						"copyright": "Jerome Favre/Bloomberg, via Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/20/style/xxdress/xxdress-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A customer tries on a suit jacket inside a Canali Holding SpA store in Hong Kong.",
+						"copyright": "Jerome Favre/Bloomberg, via Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/20/style/xxdress/xxdress-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A customer tries on a suit jacket inside a Canali Holding SpA store in Hong Kong.",
+						"copyright": "Jerome Favre/Bloomberg, via Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/20/style/xxdress/xxdress-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A customer tries on a suit jacket inside a Canali Holding SpA store in Hong Kong.",
+						"copyright": "Jerome Favre/Bloomberg, via Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/20/style/xxdress/xxdress-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "A customer tries on a suit jacket inside a Canali Holding SpA store in Hong Kong.",
+						"copyright": "Jerome Favre/Bloomberg, via Getty Images"
+					}
+				],
+				"short_url": "http://nyti.ms/2dKT9Fr"
+			},
+			{
+				"section": "Arts",
+				"subsection": "Art & Design",
+				"title": "Look Who’s Smiley Now: MoMA Acquires Original Emoji",
+				"abstract": "The Museum of Modern Art has acquired the original set of 176 emoji that were designed by Shigetaka Kurita.",
+				"url": "http://www.nytimes.com/2016/10/27/arts/design/look-whos-smiley-now-moma-acquires-original-emoji.html",
+				"byline": "By AMANDA HESS",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T12:00:24-04:00",
+				"created_date": "2016-10-26T12:00:26-04:00",
+				"published_date": "2016-10-26T12:00:26-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Art",
+					"Emojis and Emoticons",
+					"Computers and the Internet"
+				],
+				"org_facet": [
+					"Museum of Modern Art",
+					"NTT Docomo"
+				],
+				"per_facet": [
+					"Kurita, Shigetaka"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/27MOMA-ITEM/27MOMA-ITEM-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The original set of 176 emoji, which have been acquired by the Museum of Modern Art.",
+						"copyright": "Shigetaka Kurita, gift of NTT DoCoMo"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/27MOMA-ITEM/27MOMA-ITEM-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The original set of 176 emoji, which have been acquired by the Museum of Modern Art.",
+						"copyright": "Shigetaka Kurita, gift of NTT DoCoMo"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/27MOMA-ITEM/27MOMA-ITEM-articleInline.jpg",
+						"format": "Normal",
+						"height": 77,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The original set of 176 emoji, which have been acquired by the Museum of Modern Art.",
+						"copyright": "Shigetaka Kurita, gift of NTT DoCoMo"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/27MOMA-ITEM/27MOMA-ITEM-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The original set of 176 emoji, which have been acquired by the Museum of Modern Art.",
+						"copyright": "Shigetaka Kurita, gift of NTT DoCoMo"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/27MOMA-ITEM/27MOMA-ITEM-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 813,
+						"width": 2000,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The original set of 176 emoji, which have been acquired by the Museum of Modern Art.",
+						"copyright": "Shigetaka Kurita, gift of NTT DoCoMo"
+					}
+				],
+				"short_url": "http://nyti.ms/2dKDfeo"
+			},
+			{
+				"section": "Travel",
+				"subsection": "",
+				"title": "I Hopped a Plane Just for a Barbecue Sandwich. I’d Do It Again.",
+				"abstract": "The Skylight Inn in North Carolina is hundreds of miles from my home in New York City, but the lure of its signature barbecue sandwich was impossible to resist.",
+				"url": "http://www.nytimes.com/2016/10/30/travel/southern-barbecue-bbq-sandwich-north-carolina.html",
+				"byline": "By ETHAN HAUSER",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T06:00:06-04:00",
+				"created_date": "2016-10-26T06:00:08-04:00",
+				"published_date": "2016-10-26T06:00:08-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Barbecue",
+					"Meat",
+					"Road Trips",
+					"Travel and Vacations"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Judd, Donald",
+					"Helms, Jesse"
+				],
+				"geo_facet": [
+					"Greensboro (NC)",
+					"Queens (NYC)",
+					"North Carolina",
+					"Marfa (Tex)"
+				],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/travel/26SKYLIGHT/26SKYLIGHT-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Pork, cornbread, and sweet coleslaw from the Skylight Inn.",
+						"copyright": "Denny Culbert"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/travel/26SKYLIGHT/26SKYLIGHT-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Pork, cornbread, and sweet coleslaw from the Skylight Inn.",
+						"copyright": "Denny Culbert"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/travel/26SKYLIGHT/26SKYLIGHT-articleInline.jpg",
+						"format": "Normal",
+						"height": 247,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Pork, cornbread, and sweet coleslaw from the Skylight Inn.",
+						"copyright": "Denny Culbert"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/travel/26SKYLIGHT/26SKYLIGHT-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Pork, cornbread, and sweet coleslaw from the Skylight Inn.",
+						"copyright": "Denny Culbert"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/travel/26SKYLIGHT/26SKYLIGHT-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 2048,
+						"width": 1575,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Pork, cornbread, and sweet coleslaw from the Skylight Inn.",
+						"copyright": "Denny Culbert"
+					}
+				],
+				"short_url": "http://nyti.ms/2dJmfFg"
+			},
+			{
+				"section": "Fashion & Style",
+				"subsection": "",
+				"title": "The Uninvited Guest: The 2016 Campaign Crashes the Dinner Party",
+				"abstract": "At dinner parties and other social gatherings, New Yorkers can’t stay away from this third-rail subject of discussion.",
+				"url": "http://www.nytimes.com/2016/10/27/fashion/presidential-election-donald-trump-hillary-clinton-dinner-parties.html",
+				"byline": "By GEORGE GURLEY",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T14:35:59-04:00",
+				"created_date": "2016-10-26T14:36:02-04:00",
+				"published_date": "2016-10-26T14:36:02-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Presidential Election of 2016",
+					"Social life",
+					"Debates (Political)",
+					"United States Politics and Government",
+					"Last Week Tonight With John Oliver (TV Program)"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Clinton, Hillary Rodham",
+					"Trump, Donald J",
+					"Walker, Darren (1959- )",
+					"Bell, Lake",
+					"McInerney, Jay"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/fashion/27CONVERSATION/27CONVERSATION-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Polly Becker"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/fashion/27CONVERSATION/27CONVERSATION-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Polly Becker"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/fashion/27CONVERSATION/27CONVERSATION-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Polly Becker"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/fashion/27CONVERSATION/27CONVERSATION-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Polly Becker"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/fashion/27CONVERSATION/27CONVERSATION-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "",
+						"copyright": "Polly Becker"
+					}
+				],
+				"short_url": "http://nyti.ms/2dJ8yuM"
+			},
+			{
+				"section": "U.S.",
+				"subsection": "",
+				"title": "Health Law Tax Penalty? I’ll Take It, Millions Say",
+				"abstract": "A lot of healthy people are defying predictions by the Affordable Care Act architects and refusing to enroll, throwing off the math behind the system.",
+				"url": "http://www.nytimes.com/2016/10/27/us/obamacare-affordable-care-act-tax-penalties.html",
+				"byline": "By ROBERT PEAR",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T12:38:02-04:00",
+				"created_date": "2016-10-26T12:38:04-04:00",
+				"published_date": "2016-10-26T12:38:04-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Patient Protection and Affordable Care Act (2010)",
+					"Health Insurance and Managed Care"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Obama, Barack"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27penalty/27penalty-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The decision by many healthy people not to sign up under the Affordable Care Act, even if it means a tax penalty, is undermining the plan.",
+						"copyright": "Karen Bleier/Agence France-Presse — Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27penalty/27penalty-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The decision by many healthy people not to sign up under the Affordable Care Act, even if it means a tax penalty, is undermining the plan.",
+						"copyright": "Karen Bleier/Agence France-Presse — Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27penalty/27penalty-articleInline.jpg",
+						"format": "Normal",
+						"height": 135,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The decision by many healthy people not to sign up under the Affordable Care Act, even if it means a tax penalty, is undermining the plan.",
+						"copyright": "Karen Bleier/Agence France-Presse — Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27penalty/27penalty-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The decision by many healthy people not to sign up under the Affordable Care Act, even if it means a tax penalty, is undermining the plan.",
+						"copyright": "Karen Bleier/Agence France-Presse — Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27penalty/27penalty-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1450,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The decision by many healthy people not to sign up under the Affordable Care Act, even if it means a tax penalty, is undermining the plan.",
+						"copyright": "Karen Bleier/Agence France-Presse — Getty Images"
+					}
+				],
+				"short_url": "http://nyti.ms/2dIKB7a"
+			},
+			{
+				"section": "Health",
+				"subsection": "",
+				"title": "H.I.V. Arrived in the U.S. Long Before ‘Patient Zero’",
+				"abstract": "The virus appeared in New York as early as 1971, according to a new genetic analysis, and spread from there to San Francisco.",
+				"url": "http://www.nytimes.com/2016/10/27/health/hiv-patient-zero-genetic-analysis.html",
+				"byline": "By DONALD G. McNEIL Jr.",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T17:41:31-04:00",
+				"created_date": "2016-10-26T13:07:06-04:00",
+				"published_date": "2016-10-26T13:07:06-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Acquired Immune Deficiency Syndrome",
+					"Genetics and Heredity"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Dugas, Gaetan"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/science/27AIDS4/27AIDS4-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Demonstrators holding signs with numbers for each patient who died from AIDS at a memorial service in Central Park in June 1983. Scientists report that the strain of H.I.V. responsible for almost all AIDS cases in the United States spread from Haiti to New York City around 1971.",
+						"copyright": "Alon Reininger/Contact Press Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/science/27AIDS4/27AIDS4-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Demonstrators holding signs with numbers for each patient who died from AIDS at a memorial service in Central Park in June 1983. Scientists report that the strain of H.I.V. responsible for almost all AIDS cases in the United States spread from Haiti to New York City around 1971.",
+						"copyright": "Alon Reininger/Contact Press Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/science/27AIDS4/27AIDS4-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Demonstrators holding signs with numbers for each patient who died from AIDS at a memorial service in Central Park in June 1983. Scientists report that the strain of H.I.V. responsible for almost all AIDS cases in the United States spread from Haiti to New York City around 1971.",
+						"copyright": "Alon Reininger/Contact Press Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/science/27AIDS4/27AIDS4-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Demonstrators holding signs with numbers for each patient who died from AIDS at a memorial service in Central Park in June 1983. Scientists report that the strain of H.I.V. responsible for almost all AIDS cases in the United States spread from Haiti to New York City around 1971.",
+						"copyright": "Alon Reininger/Contact Press Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/science/27AIDS4/27AIDS4-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1367,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Demonstrators holding signs with numbers for each patient who died from AIDS at a memorial service in Central Park in June 1983. Scientists report that the strain of H.I.V. responsible for almost all AIDS cases in the United States spread from Haiti to New York City around 1971.",
+						"copyright": "Alon Reininger/Contact Press Images"
+					}
+				],
+				"short_url": "http://nyti.ms/2dIV4PE"
+			},
+			{
+				"section": "U.S.",
+				"subsection": "",
+				"title": "2 Kentucky Police Officers Win Pregnancy Discrimination Case",
+				"abstract": "The Justice Department announced Wednesday that the city of Florence, Ky., would allow modified duty for pregnant employees and pay $135,000 in damages to two officers.",
+				"url": "http://www.nytimes.com/2016/10/27/us/florence-kentucky-police.html",
+				"byline": "By RICHARD PÉREZ-PEÑA",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T15:59:47-04:00",
+				"created_date": "2016-10-26T15:59:48-04:00",
+				"published_date": "2016-10-26T15:59:48-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Pregnancy and Childbirth",
+					"Police",
+					"Discrimination"
+				],
+				"org_facet": [
+					"Justice Department"
+				],
+				"per_facet": [],
+				"geo_facet": [
+					"Florence (Ky)"
+				],
+				"multimedia": [],
+				"short_url": "http://nyti.ms/2dLpjAG"
+			},
+			{
+				"section": "Sports",
+				"subsection": "Pro Football",
+				"title": "TV Viewership Falls in N.F.L. and Premier League: A Blip, or Something Worse?",
+				"abstract": "The startling, double-digital declines in TV viewership raise questions about whether the football and soccer leagues have reached their peak.",
+				"url": "http://www.nytimes.com/2016/10/27/sports/football/tv-viewership-falls-in-nfl-and-epl-a-blip-or-something-worse.html",
+				"byline": "By KEN BELSON, RICHARD SANDOMIR and RORY SMITH",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T14:52:00-04:00",
+				"created_date": "2016-10-26T14:52:02-04:00",
+				"published_date": "2016-10-26T14:52:02-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Ratings (Audience Measurement)",
+					"Television",
+					"Football",
+					"Soccer"
+				],
+				"org_facet": [
+					"English Premier League",
+					"National Football League",
+					"CBS Sports",
+					"National Broadcasting Co"
+				],
+				"per_facet": [],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/sports/27FOOTBALLweb1/27FOOTBALLweb1-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sunday night’s 6-6 tie between the Seahawks and the Cardinals on NBC drew 17.7 million viewers, down 11 percent from the game played in that slot last year.",
+						"copyright": "Christian Petersen/Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/sports/27FOOTBALLweb1/27FOOTBALLweb1-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sunday night’s 6-6 tie between the Seahawks and the Cardinals on NBC drew 17.7 million viewers, down 11 percent from the game played in that slot last year.",
+						"copyright": "Christian Petersen/Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/sports/27FOOTBALLweb1/27FOOTBALLweb1-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sunday night’s 6-6 tie between the Seahawks and the Cardinals on NBC drew 17.7 million viewers, down 11 percent from the game played in that slot last year.",
+						"copyright": "Christian Petersen/Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/sports/27FOOTBALLweb1/27FOOTBALLweb1-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sunday night’s 6-6 tie between the Seahawks and the Cardinals on NBC drew 17.7 million viewers, down 11 percent from the game played in that slot last year.",
+						"copyright": "Christian Petersen/Getty Images"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/sports/27FOOTBALLweb1/27FOOTBALLweb1-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sunday night’s 6-6 tie between the Seahawks and the Cardinals on NBC drew 17.7 million viewers, down 11 percent from the game played in that slot last year.",
+						"copyright": "Christian Petersen/Getty Images"
+					}
+				],
+				"short_url": "http://nyti.ms/2dJ9WOd"
+			},
+			{
+				"section": "Movies",
+				"subsection": "",
+				"title": "Warren Beatty Wants Six Hours of Your Time. Or More.",
+				"abstract": "Mr. Beatty’s “Rules Don’t Apply” is the first film he has written, directed and starred in since “Bulworth,” in 1998. And he’ll talk your ear off about it.",
+				"url": "http://www.nytimes.com/2016/10/30/movies/warren-beatty-rules-dont-apply.html",
+				"byline": "By CARA BUCKLEY",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T12:47:13-04:00",
+				"created_date": "2016-10-26T12:47:15-04:00",
+				"published_date": "2016-10-26T12:47:15-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Movies",
+					"Actors and Actresses",
+					"Rules Don't Apply (Movie)"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Beatty, Warren",
+					"Bening, Annette",
+					"Ehrenreich, Alden",
+					"Collins, Lily"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/30/arts/30BEATTYJP1/30BEATTYJP1-thumbStandard-v7.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Warren Beatty at the Four Seasons Los Angeles at Beverly Hills.",
+						"copyright": "Emily Berl for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/30/arts/30BEATTYJP1/30BEATTYJP1-thumbLarge-v7.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Warren Beatty at the Four Seasons Los Angeles at Beverly Hills.",
+						"copyright": "Emily Berl for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/30/arts/30BEATTYJP1/30BEATTYJP1-articleInline-v7.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Warren Beatty at the Four Seasons Los Angeles at Beverly Hills.",
+						"copyright": "Emily Berl for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/30/arts/30BEATTYJP1/30BEATTYJP1-mediumThreeByTwo210-v7.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Warren Beatty at the Four Seasons Los Angeles at Beverly Hills.",
+						"copyright": "Emily Berl for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/30/arts/30BEATTYJP1/30BEATTYJP1-superJumbo-v6.jpg",
+						"format": "superJumbo",
+						"height": 2048,
+						"width": 1638,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Warren Beatty at the Four Seasons Los Angeles at Beverly Hills.",
+						"copyright": "Emily Berl for The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dKKjrg"
+			},
+			{
+				"section": "U.S.",
+				"subsection": "",
+				"title": "California Today: Can the State’s Housing Mess Be Solved?",
+				"abstract": "Wednesday: How and where to build to contain housing costs, cases of sexually transmitted diseases are surging in California, and vying for a solar power speed record.",
+				"url": "http://www.nytimes.com/2016/10/26/us/california-today-housing.html",
+				"byline": "By MIKE McPHATE",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T08:30:17-04:00",
+				"created_date": "2016-10-26T08:30:20-04:00",
+				"published_date": "2016-10-26T08:30:20-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"California Today"
+				],
+				"org_facet": [],
+				"per_facet": [],
+				"geo_facet": [
+					"California"
+				],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26ct-3/26ct-3-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Construction cranes for a high-rise complex being built in downtown Los Angeles. A report called for building denser apartments around transit hubs.",
+						"copyright": "Monica Almeida/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26ct-3/26ct-3-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Construction cranes for a high-rise complex being built in downtown Los Angeles. A report called for building denser apartments around transit hubs.",
+						"copyright": "Monica Almeida/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26ct-3/26ct-3-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Construction cranes for a high-rise complex being built in downtown Los Angeles. A report called for building denser apartments around transit hubs.",
+						"copyright": "Monica Almeida/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26ct-3/26ct-3-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Construction cranes for a high-rise complex being built in downtown Los Angeles. A report called for building denser apartments around transit hubs.",
+						"copyright": "Monica Almeida/The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/us/26ct-3/26ct-3-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Construction cranes for a high-rise complex being built in downtown Los Angeles. A report called for building denser apartments around transit hubs.",
+						"copyright": "Monica Almeida/The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dI7sPY"
+			},
+			{
+				"section": "World",
+				"subsection": "Asia Pacific",
+				"title": "‘Afghan Girl’ in 1985 National Geographic Photo Is Arrested in Pakistan",
+				"abstract": "Sharbat Gula, whose piercing green eyes stared out from the magazine’s cover in 1985, was held after being accused of fraudulently obtaining national identity cards.",
+				"url": "http://www.nytimes.com/2016/10/27/world/asia/afghan-woman-in-famed-national-geographic-photo-is-arrested-in-pakistan.html",
+				"byline": "By CHRISTINE HAUSER and ISMAIL KHAN",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T16:16:49-04:00",
+				"created_date": "2016-10-26T13:10:13-04:00",
+				"published_date": "2016-10-26T13:10:13-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Refugees and Displaced Persons",
+					"Identity Theft",
+					"Corruption (Institutional)",
+					"Photography",
+					"Magazines"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Sharbat Gula",
+					"Steve McCurry"
+				],
+				"geo_facet": [
+					"Afghanistan",
+					"Pakistan"
+				],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/nytnow/27xp-Afghan/27Briefing-Asia-Gula-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sharbat Gula, the ‘Afghan Girl’ who appeared on the cover of a 1985 edition of National Geographic in a mug shot by Pakistani authorities after she was arrested on Wednesday.",
+						"copyright": "Pakistan Federal Investigation Agency"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/nytnow/27xp-Afghan/27Briefing-Asia-Gula-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sharbat Gula, the ‘Afghan Girl’ who appeared on the cover of a 1985 edition of National Geographic in a mug shot by Pakistani authorities after she was arrested on Wednesday.",
+						"copyright": "Pakistan Federal Investigation Agency"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/nytnow/27xp-Afghan/27Briefing-Asia-Gula-articleInline.jpg",
+						"format": "Normal",
+						"height": 130,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sharbat Gula, the ‘Afghan Girl’ who appeared on the cover of a 1985 edition of National Geographic in a mug shot by Pakistani authorities after she was arrested on Wednesday.",
+						"copyright": "Pakistan Federal Investigation Agency"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/nytnow/27xp-Afghan/27Briefing-Asia-Gula-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sharbat Gula, the ‘Afghan Girl’ who appeared on the cover of a 1985 edition of National Geographic in a mug shot by Pakistani authorities after she was arrested on Wednesday.",
+						"copyright": "Pakistan Federal Investigation Agency"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/nytnow/27xp-Afghan/27Briefing-Asia-Gula-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1402,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Sharbat Gula, the ‘Afghan Girl’ who appeared on the cover of a 1985 edition of National Geographic in a mug shot by Pakistani authorities after she was arrested on Wednesday.",
+						"copyright": "Pakistan Federal Investigation Agency"
+					}
+				],
+				"short_url": "http://nyti.ms/2dKQxr4"
+			},
+			{
+				"section": "U.S.",
+				"subsection": "",
+				"title": "Somalis Living an American Dream in Kansas Glimpse a Nightmare",
+				"abstract": "Many in Garden City have welcomed and embraced the area’s growing diversity, but white members of a militia are accused of plotting to attack newcomers.",
+				"url": "http://www.nytimes.com/2016/10/27/us/garden-city-plot.html",
+				"byline": "By JACK HEALY",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T11:30:27-04:00",
+				"created_date": "2016-10-26T11:30:29-04:00",
+				"published_date": "2016-10-26T11:30:29-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Immigration and Emigration",
+					"Terrorism"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Brownback, Sam"
+				],
+				"geo_facet": [
+					"Garen City, Kansas",
+					"Kansas"
+				],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27gardencity1/27gardencity1-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The interior of a makeshift mosque in Garden City, Kan., that three white members of a militia are accused of planning to bomb.",
+						"copyright": "Adam Shrimplin/Reuters"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27gardencity1/27gardencity1-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The interior of a makeshift mosque in Garden City, Kan., that three white members of a militia are accused of planning to bomb.",
+						"copyright": "Adam Shrimplin/Reuters"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27gardencity1/27gardencity1-articleInline-v2.jpg",
+						"format": "Normal",
+						"height": 117,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The interior of a makeshift mosque in Garden City, Kan., that three white members of a militia are accused of planning to bomb.",
+						"copyright": "Adam Shrimplin/Reuters"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27gardencity1/27gardencity1-mediumThreeByTwo210-v2.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The interior of a makeshift mosque in Garden City, Kan., that three white members of a militia are accused of planning to bomb.",
+						"copyright": "Adam Shrimplin/Reuters"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/27/us/27gardencity1/27gardencity1-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1183,
+						"width": 1774,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "The interior of a makeshift mosque in Garden City, Kan., that three white members of a militia are accused of planning to bomb.",
+						"copyright": "Adam Shrimplin/Reuters"
+					}
+				],
+				"short_url": "http://nyti.ms/2dKtVas"
+			},
+			{
+				"section": "Sports",
+				"subsection": "Baseball",
+				"title": "The Big League Prospect Who Became a Mob Hit Man",
+				"abstract": "Baseball scouts used to scrutinize Maury Lerner’s every move. Then F.B.I. agents were the ones watching.",
+				"url": "http://www.nytimes.com/2016/10/30/sports/baseball/maurice-lerner-prospect-turned-mob-hitman.html",
+				"byline": "By DAN BARRY",
+				"item_type": "Article",
+				"updated_date": "2016-10-24T17:50:08-04:00",
+				"created_date": "2016-10-24T17:50:11-04:00",
+				"published_date": "2016-10-24T17:50:11-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Baseball",
+					"Organized Crime"
+				],
+				"org_facet": [],
+				"per_facet": [
+					"Maury Lerner"
+				],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/09/29/sports/hitman-test2/hitman-test2-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Maury Lerner batted .328 for the Boise Braves in 1957. Twenty years later, he was serving time at the Adult Correctional Institutions in Rhode Island.",
+						"copyright": "Leo J. Leeburn, via Idaho State Historical Society"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/09/29/sports/hitman-test2/hitman-test2-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Maury Lerner batted .328 for the Boise Braves in 1957. Twenty years later, he was serving time at the Adult Correctional Institutions in Rhode Island.",
+						"copyright": "Leo J. Leeburn, via Idaho State Historical Society"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/09/29/sports/hitman-test2/hitman-test2-articleInline.jpg",
+						"format": "Normal",
+						"height": 237,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Maury Lerner batted .328 for the Boise Braves in 1957. Twenty years later, he was serving time at the Adult Correctional Institutions in Rhode Island.",
+						"copyright": "Leo J. Leeburn, via Idaho State Historical Society"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/09/29/sports/hitman-test2/hitman-test2-mediumThreeByTwo210-v2.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Maury Lerner batted .328 for the Boise Braves in 1957. Twenty years later, he was serving time at the Adult Correctional Institutions in Rhode Island.",
+						"copyright": "Leo J. Leeburn, via Idaho State Historical Society"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/09/29/sports/hitman-test2/hitman-test2-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 2048,
+						"width": 1644,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Maury Lerner batted .328 for the Boise Braves in 1957. Twenty years later, he was serving time at the Adult Correctional Institutions in Rhode Island.",
+						"copyright": "Leo J. Leeburn, via Idaho State Historical Society"
+					}
+				],
+				"short_url": "http://nyti.ms/2ez28y3"
+			},
+			{
+				"section": "World",
+				"subsection": "Asia Pacific",
+				"title": "ISIS Kills 23 Civilian Hostages in Western Afghanistan",
+				"abstract": "The killings in Ghor Province, far from the group’s hub in the east, are an indication that it is gaining adherents in new parts of the country.",
+				"url": "http://www.nytimes.com/2016/10/27/world/asia/afghanistan-isis-killings-ghor.html",
+				"byline": "By ROD NORDLAND and JAWAD SUKHANYAR",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T07:12:14-04:00",
+				"created_date": "2016-10-26T07:12:17-04:00",
+				"published_date": "2016-10-26T07:12:17-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Civilian Casualties",
+					"Terrorism",
+					"Kidnapping and Hostages"
+				],
+				"org_facet": [
+					"Islamic State in Iraq and Syria (ISIS)",
+					"Islamic State in the Khorasan"
+				],
+				"per_facet": [],
+				"geo_facet": [
+					"Afghanistan"
+				],
+				"multimedia": [],
+				"short_url": "http://nyti.ms/2dJxuO1"
+			},
+			{
+				"section": "Arts",
+				"subsection": "Television",
+				"title": "What’s on TV Wednesday: ‘Rectify’ and ‘Lip Sync Battle’",
+				"abstract": "Daniel Holden tries to re-enter society as the final season of “Rectify” begins. And Laverne Cox and Samira Wiley of “Orange Is the New Black” face off in “Lip Sync Battle.”",
+				"url": "http://www.nytimes.com/2016/10/26/arts/television/whats-on-tv-wednesday-rectify-and-lip-sync-battle.html",
+				"byline": "By KATHRYN SHATTUCK",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T18:22:07-04:00",
+				"created_date": "2016-10-26T01:00:29-04:00",
+				"published_date": "2016-10-26T01:00:29-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Television",
+					"Web-Original Programming"
+				],
+				"org_facet": [],
+				"per_facet": [],
+				"geo_facet": [],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/26TV1/26TV1-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Aden Young in “Rectify.”",
+						"copyright": "Jackson Lee Davis/Sundance"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/26TV1/26TV1-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Aden Young in “Rectify.”",
+						"copyright": "Jackson Lee Davis/Sundance"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/26TV1/26TV1-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Aden Young in “Rectify.”",
+						"copyright": "Jackson Lee Davis/Sundance"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/26TV1/26TV1-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Aden Young in “Rectify.”",
+						"copyright": "Jackson Lee Davis/Sundance"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/26/arts/26TV1/26TV1-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1367,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "Aden Young in “Rectify.”",
+						"copyright": "Jackson Lee Davis/Sundance"
+					}
+				],
+				"short_url": "http://nyti.ms/2dHbvMq"
+			},
+			{
+				"section": "World",
+				"subsection": "What in the World",
+				"title": "South Koreans, Seeking New Zest for Life, Experience Their Own Funerals",
+				"abstract": "Participants of the mock funeral program write a testament, don a shroud, and climb in a coffin, which is then hammered shut for 10 long minutes.",
+				"url": "http://www.nytimes.com/2016/10/27/world/what-in-the-world/korea-mock-funeral-coffin.html",
+				"byline": "By CHOE SANG-HUN",
+				"item_type": "Article",
+				"updated_date": "2016-10-26T05:00:23-04:00",
+				"created_date": "2016-10-26T05:00:26-04:00",
+				"published_date": "2016-10-26T05:00:26-04:00",
+				"material_type_facet": "",
+				"kicker": "",
+				"des_facet": [
+					"Funerals and Memorials"
+				],
+				"org_facet": [],
+				"per_facet": [],
+				"geo_facet": [
+					"South Korea"
+				],
+				"multimedia": [
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/world/27witkorea-coffin/27witkorea-coffin-thumbStandard.jpg",
+						"format": "Standard Thumbnail",
+						"height": 75,
+						"width": 75,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "South Koreans during a mock funeral service in Seoul on Saturday. Such funerals have become popular in South Korea as a way to gain more appreciation for life.",
+						"copyright": "Jean Chung for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/world/27witkorea-coffin/27witkorea-coffin-thumbLarge.jpg",
+						"format": "thumbLarge",
+						"height": 150,
+						"width": 150,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "South Koreans during a mock funeral service in Seoul on Saturday. Such funerals have become popular in South Korea as a way to gain more appreciation for life.",
+						"copyright": "Jean Chung for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/world/27witkorea-coffin/27witkorea-coffin-articleInline.jpg",
+						"format": "Normal",
+						"height": 127,
+						"width": 190,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "South Koreans during a mock funeral service in Seoul on Saturday. Such funerals have become popular in South Korea as a way to gain more appreciation for life.",
+						"copyright": "Jean Chung for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/world/27witkorea-coffin/27witkorea-coffin-mediumThreeByTwo210.jpg",
+						"format": "mediumThreeByTwo210",
+						"height": 140,
+						"width": 210,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "South Koreans during a mock funeral service in Seoul on Saturday. Such funerals have become popular in South Korea as a way to gain more appreciation for life.",
+						"copyright": "Jean Chung for The New York Times"
+					},
+					{
+						"url": "https://static01.nyt.com/images/2016/10/25/world/27witkorea-coffin/27witkorea-coffin-superJumbo.jpg",
+						"format": "superJumbo",
+						"height": 1365,
+						"width": 2048,
+						"type": "image",
+						"subtype": "photo",
+						"caption": "South Koreans during a mock funeral service in Seoul on Saturday. Such funerals have become popular in South Korea as a way to gain more appreciation for life.",
+						"copyright": "Jean Chung for The New York Times"
+					}
+				],
+				"short_url": "http://nyti.ms/2dHEFem"
+			}
+		]
+	};
+
+/***/ },
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3

@@ -1,16 +1,24 @@
 import React from 'react'
+import Color from 'color'
 import { ColorUtil } from '../util/color.js'
+import TopStories from 'json!../data/nyt-top-stories.json'
 
 class Combination extends React.Component {
   constructor(props){
     super(props)
+
+    // console.log('TopStories', TopStories)
+
+    let story = TopStories.results[Math.floor(Math.random() * TopStories.results.length)]
 
     this.state = {
       base: props.combos.base,
       headings: props.combos.headings,
       body: props.combos.body,
       headingColor: null,
-      bodyColor: null
+      bodyColor: null,
+      titleText: story.title,
+      bodyText: story.abstract
     }
   }
   setHeadingColor(event){
@@ -68,12 +76,56 @@ class Combination extends React.Component {
       bodyText = this.state.body.length + " options found.";
     }
 
+    let headingSwatch = null;
+    if(this.state.headingColor != null){
+      let c = Color(this.state.headingColor)
+      let swatchStyle = {
+        backgroundColor: c.hexString(),
+        color: "rgba(255,255,255,.5)",
+        fontSize: '11px'
+      }
+      if(c.light()){
+        swatchStyle.color = 'rgba(0,0,0,.5)'
+      }
+      headingSwatch = <span className="dib pa2 br2" style={ swatchStyle }>{c.hexString()}</span>
+    }
+
+    let bodySwatch = null;
+    if(this.state.bodyColor != null){
+      let c = Color(this.state.bodyColor)
+      let swatchStyle = {
+        backgroundColor: c.hexString(),
+        color: "rgba(255,255,255,.4)",
+        fontSize: '11px'
+      }
+      if(c.light()){
+        swatchStyle.color = 'rgba(0,0,0,.4)'
+      }
+      bodySwatch = <span className="dib pa2 br2" style={ swatchStyle }>{c.hexString()}</span>
+    }
+
+    let baseSwatchStyle = {
+      // backgroundColor: '#000',
+      color: this.state.base.hexString(),
+      fontSize: '11px',
+      border: '1px solid rgba(0,0,0,.1)',
+      color: 'rgba(0,0,0,.5)'
+    }
+    if(this.state.base.dark()){
+      baseSwatchStyle.border = '1px solid rgba(255,255,255,.1)';
+      baseSwatchStyle.color = 'rgba(255,255,255,.5)'
+    }
+    let baseSwatch = <span className="border-box dib pa2 br2" style={ baseSwatchStyle }>{this.state.base.hexString()}</span>
+
     return <div className="db" style={style}>
       <div className="fl w-100 w-100-m w-50-ns pa3 pa4-ns">
-        <h2 style={{color: headingColor }} className="mb2 ma0">{headingText}</h2>
-        <p style={{ color: bodyColor }} className="mt2 mb2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat ex ut eros sagittis, vestibulum faucibus purus lobortis. Donec volutpat metus sit amet sapien tincidunt, ornare euismod purus fermentum. Cras ac pretium libero. Maecenas vehicula hendrerit nulla eget venenatis. Suspendisse placerat non arcu id malesuada.
+        <h2 style={{color: headingColor }} className="mb2 ma0">{this.state.titleText}</h2>
+        <p style={{ color: bodyColor }} className="mt2 mb2 f6 lh-copy">
+          {this.state.bodyText}
         </p>
+        <div className="mt3">
+          {baseSwatch} {headingSwatch} {bodySwatch}
+        </div>
       </div>
 
       <div className="fl w-100 w-100-m w-50-ns pa3 pa4-ns">

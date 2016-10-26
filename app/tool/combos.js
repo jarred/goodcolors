@@ -17,7 +17,6 @@ class Combos extends React.Component {
     if(combos.length <= 0){
       helpText = <div className="gray">Add more colours to your palette to see some combinations.</div>
     }
-    console.log('combos', combos)
     return <div>
       {helpText}
       {combos.map((result, index) => (
