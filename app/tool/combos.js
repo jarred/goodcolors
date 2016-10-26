@@ -21,7 +21,7 @@ class Combos extends React.Component {
     return <div>
       {helpText}
       {combos.map((result, index) => (
-         <Combination combos={result} />
+         <Combination key={result.base.hexString().replace('#', '') + this.state.level } combos={result} />
        ))}
     </div>;
   }

@@ -13,10 +13,10 @@ class Tool extends React.Component {
     }
   }
   onRemoveColor(color){
-        // remove this color from state.colors
+        // remove  color from state.colors and re-render
   }
   onAddColor(color){
-    var colors = this.state.colors || [];
+    var colors = this.state.colors;
     colors.push(color)
     this.setState({ colors: colors })
   }
@@ -32,8 +32,3 @@ class Tool extends React.Component {
 }
 
 export { Tool }
-
-/*
-<h4 className="mt5">AA Combinations</h4>
-<Combos level="AA" colors={this.state.colors} />
-*/

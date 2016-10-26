@@ -32,7 +32,7 @@ class Swatches extends React.Component {
   render() {
     return <div>
     {this.state.colors.map((result, index) => (
-       <Swatch color={result} onRemoveColor={this.onRemoveColor} />
+       <Swatch key={result.hexString().replace('#', '')} color={result} onRemoveColor={this.onRemoveColor} />
      ))}
      <div className="cf"></div>
       <form className="mt3" onSubmit={this.handleSubmit}>
