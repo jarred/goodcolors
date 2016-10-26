@@ -69,7 +69,7 @@
 	      null,
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'mb4' },
+	        { className: 'mb4-ns pa4 pa0-ns' },
 	        _react2.default.createElement(
 	          'strong',
 	          null,
@@ -25844,6 +25844,10 @@
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 
+	var _color = __webpack_require__(219);
+
+	var _color2 = _interopRequireDefault(_color);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25862,8 +25866,23 @@
 
 	    _this.onAddColor = _this.onAddColor.bind(_this);
 	    _this.onRemoveColor = _this.onRemoveColor.bind(_this);
+
+	    var initialColours = [];
+
+	    // Green
+	    // initialColours = ['#001B0B', '#215732', '#00491E', '#007737', '#00892F', '#30B700', '#006F44', '#00A376', '#00B388', '#4DB748', '#00B140', '#00CFB4', '#007041', '#3E9A2C', '#215732', '#007A33', '#009739', '#56C271', '#00A82D', '#00AA13', '#279F00', '#1FA824', '#4CAE04', '#025F1D', '#008C15', '#A0DCAF', '#86CD8B', '#E1F4E4', '#1DAC57', '#1A5213', '#1A5213', '#1A5213', '#1A5213', '#1A5213', '#FFF'];
+
+	    // Material
+	    // initialColours = ['#ECEFF1','#CFD8DC','#B0BEC5','#90A4AE','#78909C','#607D8B','#546E7A','#455A64','#37474F','#263238','#FFFDE7','#FFF9C4','#FFF59D','#FFF176','#FFEE58','#FFEB3B','#FDD835','#FBC02D','#F9A825','#F57F17','#FFFF8D','#FFFF00','#FFEA00','#FFD600','#EDE7F6','#D1C4E9','#B39DDB','#9575CD','#7E57C2','#673AB7','#5E35B1','#512DA8','#4527A0','#311B92','#B388FF','#7C4DFF','#651FFF','#6200EA']
+
+	    var readyColors = [];
+
+	    initialColours.map(function (result) {
+	      readyColors.push((0, _color2.default)(result));
+	    });
+
 	    _this.state = {
-	      colors: []
+	      colors: readyColors
 	    };
 	    return _this;
 	  }
@@ -30445,82 +30464,141 @@
 	    _this.state = {
 	      base: props.combos.base,
 	      headings: props.combos.headings,
-	      body: props.combos.body
+	      body: props.combos.body,
+	      headingColor: null,
+	      bodyColor: null
 	    };
 	    return _this;
 	  }
 
 	  _createClass(Combination, [{
+	    key: 'setHeadingColor',
+	    value: function setHeadingColor(event) {
+	      var el = event.target;
+	      var c = el.getAttribute('data-value');
+	      this.setState({
+	        headingColor: c
+	      });
+	    }
+	  }, {
+	    key: 'setBodyColor',
+	    value: function setBodyColor(event) {
+	      var el = event.target;
+	      var c = el.getAttribute('data-value');
+	      this.setState({
+	        bodyColor: c
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      var style = {
 	        backgroundColor: this.state.base.rgbString()
 	      };
-	      var headingColor = 'rgba(255,255,255,.7)';
+	      var headingColor = 'rgba(255,255,255,.4)';
 	      if (this.state.base.light()) {
-	        headingColor = 'rgba(0,0,0,.7)';
+	        headingColor = 'rgba(0,0,0,.4)';
 	      }
 	      if (this.state.headings.length > 0) {
 	        headingColor = this.state.headings[0].rgbString();
 	      }
-	      var bodyColor = 'rgba(255,255,255,.7)';
+	      var bodyColor = 'rgba(255,255,255,.4)';
 	      if (this.state.base.light()) {
-	        bodyColor = 'rgba(0,0,0,.7)';
+	        bodyColor = 'rgba(0,0,0,.4)';
 	      }
 	      if (this.state.body.length > 0) {
 	        bodyColor = this.state.body[0].rgbString();
 	      }
 
+	      if (this.state.headingColor != null) {
+	        headingColor = this.state.headingColor;
+	      }
+
+	      if (this.state.bodyColor != null) {
+	        bodyColor = this.state.bodyColor;
+	      }
+
 	      var headingText = "No accessible heading options found. Try adding more colours!";
 	      if (this.state.headings.length == 1) {
-	        headingText = "One accessible option available";
+	        headingText = "One accessible heading option available";
 	      } else if (this.state.headings.length > 1) {
 	        headingText = this.state.headings.length + " options found.";
 	      }
 
-	      var bodyText = "No accessible paragraph options found. Try adding more colours!";
+	      var bodyText = _react2.default.createElement(
+	        'p',
+	        { className: 'pa0 ma0' },
+	        'No accessible paragraph options found. ',
+	        _react2.default.createElement('br', null),
+	        'Try adding more colours!'
+	      );
 	      if (this.state.body.length == 1) {
-	        bodyText = "One accessible option available";
+	        bodyText = "One accessible paragraph2 option available";
 	      } else if (this.state.body.length) {
-	        bodyText = this.state.headings.length + " options found.";
+	        bodyText = this.state.body.length + " options found.";
 	      }
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'db pa3', style: style },
+	        { className: 'db', style: style },
 	        _react2.default.createElement(
-	          'h2',
-	          { style: { color: headingColor }, className: 'mb2 ma0' },
-	          headingText
+	          'div',
+	          { className: 'fl w-100 w-100-m w-50-ns pa3 pa4-ns' },
+	          _react2.default.createElement(
+	            'h2',
+	            { style: { color: headingColor }, className: 'mb2 ma0' },
+	            headingText
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { style: { color: bodyColor }, className: 'mt2 mb2' },
+	            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat ex ut eros sagittis, vestibulum faucibus purus lobortis. Donec volutpat metus sit amet sapien tincidunt, ornare euismod purus fermentum. Cras ac pretium libero. Maecenas vehicula hendrerit nulla eget venenatis. Suspendisse placerat non arcu id malesuada.'
+	          )
 	        ),
-	        this.state.headings.map(function (result) {
-	          return _react2.default.createElement(
-	            'div',
-	            { className: 'fl db br1 mr1 mb1', style: { width: '30px', backgroundColor: result.rgbString() } },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'aspect-ratio aspect-ratio--1x1' },
-	              _react2.default.createElement('div', { className: 'aspect-ratio--object cover' })
-	            )
-	          );
-	        }),
-	        _react2.default.createElement('div', { className: 'cf' }),
 	        _react2.default.createElement(
-	          'p',
-	          { style: { color: bodyColor }, className: 'mt2 mb2' },
-	          bodyText
-	        ),
-	        this.state.body.map(function (result) {
-	          return _react2.default.createElement(
+	          'div',
+	          { className: 'fl w-100 w-100-m w-50-ns pa3 pa4-ns' },
+	          _react2.default.createElement(
+	            'span',
+	            { style: { color: headingColor }, className: 'db mb2 f6' },
+	            headingText
+	          ),
+	          _react2.default.createElement(
 	            'div',
-	            { className: 'fl db br1 mr1 mb1', style: { width: '30px', backgroundColor: result.rgbString() } },
-	            _react2.default.createElement(
+	            { className: 'mr5-ns' },
+	            this.state.headings.map(function (result) {
+	              return _react2.default.createElement(
+	                'div',
+	                { className: 'fl db br1 mr1 mb1', style: { width: '30px', backgroundColor: result.rgbString() } },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'aspect-ratio aspect-ratio--1x1' },
+	                  _react2.default.createElement('div', { className: 'aspect-ratio--object cover pointer dim', onClick: _this2.setHeadingColor.bind(_this2), 'data-value': result.rgbString() })
+	                )
+	              );
+	            })
+	          ),
+	          _react2.default.createElement('div', { className: 'cf' }),
+	          _react2.default.createElement(
+	            'span',
+	            { style: { color: bodyColor }, className: 'db mb2 f6 mt3' },
+	            bodyText
+	          ),
+	          this.state.body.map(function (result) {
+	            return _react2.default.createElement(
 	              'div',
-	              { className: 'aspect-ratio aspect-ratio--1x1' },
-	              _react2.default.createElement('div', { className: 'aspect-ratio--object cover' })
-	            )
-	          );
-	        }),
+	              { className: 'fl db br1 mr1 mb1', style: { width: '30px', backgroundColor: result.rgbString() } },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'aspect-ratio aspect-ratio--1x1' },
+	                _react2.default.createElement('div', { className: 'aspect-ratio--object cover pointer dim', onClick: _this2.setBodyColor.bind(_this2), 'data-value': result.rgbString() })
+	              )
+	            );
+	          }),
+	          _react2.default.createElement('div', { className: 'cf' })
+	        ),
 	        _react2.default.createElement('div', { className: 'cf' })
 	      );
 	    }

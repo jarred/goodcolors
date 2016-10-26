@@ -7,7 +7,7 @@ import {Tool} from './tool/'
 const App = () => (
   <BrowserRouter>
     <div>
-      <div className="mb4">
+      <div className="mb4-ns pa4 pa0-ns">
         <strong>Good Colors</strong> is a tool for generating responsible color combinations.
         <br />Add some colors to get started.
       </div>
