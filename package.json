@@ -22,7 +22,8 @@
     "inert": "^4.0.2",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-router": "^4.0.0-alpha.4"
+    "react-router": "^4.0.0-alpha.4",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",

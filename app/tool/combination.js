@@ -62,14 +62,14 @@ class Combination extends React.Component {
       bodyColor = this.state.bodyColor;
     }
 
-    let headingText = "No accessible heading options found. Try adding more colours!"
+    let headingText = "No accessible heading options found. Try adding more colors!"
     if(this.state.headings.length == 1){
       headingText = "One accessible heading option available"
     }else if(this.state.headings.length > 1){
       headingText = this.state.headings.length + " options found.";
     }
 
-    let bodyText = <p className="pa0 ma0">No accessible paragraph options found. <br />Try adding more colours!</p>
+    let bodyText = <p className="pa0 ma0">No accessible paragraph options found. <br />Try adding more colors!</p>
     if(this.state.body.length == 1){
       bodyText = "One accessible paragraph2 option available"
     }else if(this.state.body.length){

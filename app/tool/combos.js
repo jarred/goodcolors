@@ -15,7 +15,7 @@ class Combos extends React.Component {
     let helpText = null;
     var combos = ColorUtil.getAccessibleCombos(this.state.colors, this.state.level)
     if(combos.length <= 0){
-      helpText = <div className="gray">Add more colours to your palette to see some combinations.</div>
+      helpText = <div className="gray">Add more colors to your palette to see some combinations.</div>
     }
     return <div>
       {helpText}
