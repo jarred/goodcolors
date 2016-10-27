@@ -76,33 +76,28 @@ class Combination extends React.Component {
       bodyText = this.state.body.length + " options found.";
     }
 
-    let headingSwatch = null;
-    if(this.state.headingColor != null){
-      let c = Color(this.state.headingColor)
-      let swatchStyle = {
-        backgroundColor: c.hexString(),
-        color: "rgba(255,255,255,.5)",
-        fontSize: '11px'
-      }
-      if(c.light()){
-        swatchStyle.color = 'rgba(0,0,0,.5)'
-      }
-      headingSwatch = <span className="dib pa2 br2" style={ swatchStyle }>{c.hexString()}</span>
+    let c = Color(headingColor)
+    let swatchStyle = {
+      backgroundColor: c.hexString(),
+      color: "rgba(255,255,255,.5)",
+      fontSize: '11px'
     }
+    if(c.light()){
+      swatchStyle.color = 'rgba(0,0,0,.5)'
+    }
+    let headingSwatch = <span className="dib pa2 br2" style={ swatchStyle }>{c.hexString()}</span>
 
-    let bodySwatch = null;
-    if(this.state.bodyColor != null){
-      let c = Color(this.state.bodyColor)
-      let swatchStyle = {
-        backgroundColor: c.hexString(),
-        color: "rgba(255,255,255,.4)",
-        fontSize: '11px'
-      }
-      if(c.light()){
-        swatchStyle.color = 'rgba(0,0,0,.4)'
-      }
-      bodySwatch = <span className="dib pa2 br2" style={ swatchStyle }>{c.hexString()}</span>
+    c = Color(bodyColor)
+    swatchStyle = {
+      backgroundColor: c.hexString(),
+      color: "rgba(255,255,255,.4)",
+      fontSize: '11px'
     }
+    if(c.light()){
+      swatchStyle.color = 'rgba(0,0,0,.4)'
+    }
+    let bodySwatch = <span className="dib pa2 br2" style={ swatchStyle }>{c.hexString()}</span>
+
 
     let baseSwatchStyle = {
       // backgroundColor: '#000',
