@@ -1,29 +1,35 @@
-import React from 'react'
-import { ColorUtil } from '../util/color.js'
-import {Combination} from './combination.js'
+import React from 'react';
+import {getAccessibleCombos} from '../util/color';
+import Combination from './combination';
 
-class Combos extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      colors: props.colors,
-      level: props.level
-    }
+const HelpText = ({combos}) => {
+  if (combos.length <= 0) {
+    return (
+      <div className="gray">Add more colors to your palette to see some combinations.</div>
+    );
   }
 
-  render() {
-    let helpText = null;
-    var combos = ColorUtil.getAccessibleCombos(this.state.colors, this.state.level)
-    if(combos.length <= 0){
-      helpText = <div className="gray">Add more colors to your palette to see some combinations.</div>
-    }
-    return <div>
-      {helpText}
-      {combos.map((result, index) => (
-         <Combination key={result.base.hexString().replace('#', '') + this.state.level } combos={result} />
-       ))}
-    </div>;
-  }
-}
+  return null;
+};
 
-export { Combos }
+HelpText.propTypes = {
+  combos: React.PropTypes.array.isRequired
+};
+
+const Combos = ({level, colors}) => {
+  const combos = getAccessibleCombos(colors, level);
+
+  return (
+    <div>
+      <HelpText combos={combos}/>
+      {combos.map(combo => (<Combination key={combo.base.hexString().replace('#', '')} combos={combo}/>))}
+    </div>
+  );
+};
+
+Combos.propTypes = {
+  colors: React.PropTypes.array.isRequired,
+  level: React.PropTypes.string.isRequired
+};
+
+export default Combos;

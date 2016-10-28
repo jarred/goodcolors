@@ -1,11 +1,12 @@
-var precss = require('precss')
-var autoprefixer = require('autoprefixer')
+const path = require('path');
+const precss = require('precss');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
-  entry: "./app/app.js",
+  entry: './app/app.js',
   output: {
-    path: __dirname + '/dist',
-    filename: "bundle.js"
+    path: path.join(__dirname, '/dist'),
+    filename: 'bundle.js'
   },
   module: {
     loaders: [
@@ -19,8 +20,8 @@ module.exports = {
         }
       },
       {
-        test:   /\.css$/,
-        loader: "style-loader!css-loader!postcss-loader"
+        test: /\.css$/,
+        loader: 'style-loader!css-loader!postcss-loader'
       }
     ]
   },

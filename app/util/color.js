@@ -1,44 +1,33 @@
-import Color from 'color'
+function findHeadings(base, palette, rating) {
+  return palette.map(color => {
+    if (rating === 'AAA' && color.contrast(base) >= 4.5) {
+      return color;
+    }
 
-var ColorUtil = {
-  getAccessibleCombos(palette, rating){
-    var options = [];
-    var i = 0;
-    palette.map((result, index) => {
-      var headings = this.findHeadings(result, palette, rating)
-      var body = this.findBody(result, palette, rating)
-      options.push({
-        base: result,
-        headings: headings,
-        body: body
-      })
-    })
-    return options;
-  },
-  findHeadings(base, palette, rating){
-    var results = [];
-    palette.map((c) => {
-      if(rating == 'AAA' && c.contrast(base) >= 4.5){
-        results.push(c);
-      }else if(rating == 'AA' && c.contrast(base) >= 3){
-        results.push(c);
-      }
-    })
-    return results
-  },
-  findBody(base, palette, rating){
-    var results = [];
-    palette.map((c) => {
-      if(rating == 'AAA' && base.contrast(c) >= 7){
-        results.push(c);
-      }else if(rating == 'AA' && base.contrast(c) >= 4.5){
-        results.push(c);
-      }
-    })
-    return results
-  }
+    if (rating === 'AA' && color.contrast(base) >= 3) {
+      return color;
+    }
+    return null;
+  }).filter(color => color !== null);
 }
 
-export {
-  ColorUtil
+function findBody(base, palette, rating) {
+  return palette.map(color => {
+    if (rating === 'AAA' && base.contrast(color) >= 7) {
+      return color;
+    }
+
+    if (rating === 'AA' && base.contrast(color) >= 4.5) {
+      return color;
+    }
+    return null;
+  }).filter(color => color !== null);
+}
+
+export function getAccessibleCombos(palette, rating) {
+  return palette.map(result => {
+    const headings = findHeadings(result, palette, rating);
+    const body = findBody(result, palette, rating);
+    return {base: result, headings, body};
+  });
 }

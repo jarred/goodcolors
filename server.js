@@ -1,10 +1,11 @@
-const Hapi = require('hapi')
-const server = new Hapi.Server()
+const Hapi = require('hapi');
+const inert = require('inert');
 
-server.connection({ port: 3000 })
+const server = new Hapi.Server();
 
-server.register(require('inert'), (err) => {
+server.connection({port: 3000});
 
+server.register(inert, err => {
   if (err) {
     throw err;
   }
@@ -12,25 +13,24 @@ server.register(require('inert'), (err) => {
   server.route({
     method: 'GET',
     path: '/bundle.js',
-    handler: function (request, reply) {
-      reply.file('./dist/bundle.js')
+    handler: (request, reply) => {
+      reply.file('./dist/bundle.js');
     }
-  })
+  });
 
   server.route({
     method: 'GET',
     path: '/{p*}',
-    handler: function (request, reply) {
-      reply.file('./index.html')
+    handler: (request, reply) => {
+      reply.file('./index.html');
     }
-  })
-})
+  });
+});
 
-server.start((err) => {
-
+server.start(err => {
   if (err) {
-    throw err
+    throw err;
   }
 
-  console.log(`Server running at: ${server.info.uri}`)
-})
+  console.log(`Server running at: ${server.info.uri}`);
+});
