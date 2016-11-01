@@ -11,7 +11,7 @@ const OptionSwatch = ({color}) => {
   if (color.light()) {
     swatchStyle.color = 'rgba(0,0,0,.5)';
   }
-  return <span className="dib pa2 br2" style={swatchStyle}>{color.hexString()}</span>;
+  return <span className="dib pa2 br2 mr1" style={swatchStyle}>{color.hexString()}</span>;
 };
 
 OptionSwatch.propTypes = {
@@ -25,11 +25,11 @@ const BaseSwatch = ({color}) => {
     color: 'rgba(0,0,0,.5)'
   };
   if (color.dark()) {
-    baseSwatchStyle.border = '1px solid rgba(255,255,255,.1)';
+    baseSwatchStyle.border = '1px solid rgba(255,255,255,.3)';
     baseSwatchStyle.color = 'rgba(255,255,255,.5)';
   }
   return (
-    <span className="border-box dib pa2 br2" style={baseSwatchStyle}>{color.hexString()}</span>
+    <span className="border-box dib pa2 br2 mr1" style={baseSwatchStyle}>{color.hexString()}</span>
   );
 };
 
